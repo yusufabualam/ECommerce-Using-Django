@@ -1,0 +1,49 @@
+{% extends 'basic.html' %}
+{% load static %}
+{% block title %}Product - List{% endblock %}
+
+{% block product %}
+<h1>Product Page</h1>
+<form action="{% url 'product:product_add' %}" method="get">
+<button class="btn btn-danger" type="submit">Insert Product</button>
+</form>
+<table class="table">
+    <thead>
+    <tr>
+        <td>ID</td>
+        <td>Name</td>
+        <td>Details</td>
+        <td>Category</td>
+        <td>Images</td>
+        <td>Actions</td>
+    </tr>
+    </thead>
+    <tbody class="table-group-divider">
+    {%for product in data%}
+         <tr>
+            <td>{{product.id}}</td>
+            <td>{{product.pname}}</td>
+            <td>{{product.pdetails}}</td>
+            <td>{{ product.category.cname }}</td>
+            <td><img src="{{ product.pimg.url }}"/></td>
+            <td>
+                <form action="{% url 'product:product_detail' pk=product.id %}" >
+                    <button type="submit" class="btn btn-warning">Show</button>
+                </form>
+                &nbsp;
+                <form action="{% url 'product:product_update' pk=product.id %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-warning">Update</button>
+                </form>
+                &nbsp;
+                <form action="{% url 'product:product_delete' pk=product.id %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-warning">Delete</button>
+                </form>
+                
+            </td>
+        </tr>
+    {%endfor%}
+    </tbody>
+</table>
+{% endblock %}

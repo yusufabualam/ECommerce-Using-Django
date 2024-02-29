@@ -1,0 +1,49 @@
+{% extends 'basic.html' %}
+{% load static %}
+{% block title %}Category - List{% endblock %}
+
+{% block category %}
+<h1>Category Page</h1>
+<form action="{% url 'category:AddCategory' %}" method="get">
+<button class="btn btn-danger" type="submit">Insert Category</button>
+</form>
+<br>
+<a class="btn btn-primary" href="{% url 'category:CategoryAddUsingForm' %}">Insert Category Using Forms</a>
+<table class="table">
+    <thead>
+    <tr>
+        <td>ID</td>
+        <td>Name</td>
+        <td>Actions</td>
+    </tr>
+    </thead>
+    <tbody class="table-group-divider">
+    {%for category in data%}
+         <tr>
+            <td>{{category.id}}</td>
+            <td>{{category.cname}}</td>
+            <td class="d-flex inline">
+                <form action="{% url 'category:categoryShow' category.id %}">
+                    <button type="submit" class="btn btn-warning">Show</button>
+                </form>
+                &nbsp;
+                <form action="{% url 'category:UpdateCategory' category.id %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-warning">Update</button>
+                </form>                
+                &nbsp;
+                <form action="{% url 'category:DeleteCategory' category.id %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-warning">Delete</button>
+                </form>
+                &nbsp;
+                <form action="{% url 'category:CategoryUpdateView' category.id %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">Update Using Forms</button>
+                </form>
+            </td>
+        </tr>
+    {%endfor%}
+    </tbody>
+</table>
+{% endblock %}
